@@ -70,7 +70,7 @@ class ChromaticAberrationShader extends FlxShader
 			toUse.r = col1.r;
 			toUse.g = col2.g;
 			toUse.b = col3.b;
-			//float someshit = col4.r + col4.g + col4.b;
+			
 
 			gl_FragColor = toUse;
 		}')
@@ -118,7 +118,7 @@ class Scanline extends FlxShader
 	@:glFragmentSource('
 		#pragma header
 		const float scale = 1.0;
-	uniform bool lockAlpha = false;
+	uniform bool lockAlpha;
 		void main()
 		{
 			if (mod(floor(openfl_TextureCoordv.y * openfl_TextureSize.y / scale), 2.0) == 0.0 ){
@@ -190,10 +190,10 @@ class Tiltshift extends FlxShader
 		 
 		// I am hardcoding the constants like a jerk
 			
-		uniform float bluramount  = 1.0;
-		uniform float center      = 1.0;
-		const float stepSize    = 0.004;
-		const float steps       = 3.0;
+		uniform float bluramount;
+		uniform float center;
+		const float stepSize;
+		const float steps;
 		 
 		const float minOffs     = (float(steps-1.0)) / -2.0;
 		const float maxOffs     = (float(steps-1.0)) / +2.0;
@@ -324,10 +324,10 @@ class Grain extends FlxShader
 
 		const float grainamount = 0.05; //grain amount
 		bool colored = false; //colored noise?
-		uniform float coloramount = 0.6;
-		uniform float grainsize = 1.6; //grain particle size (1.5 - 2.5)
-		uniform float lumamount = 1.0; //
-	uniform bool lockAlpha = false;
+		uniform float coloramount;
+		uniform float grainsize; //grain particle size (1.5 - 2.5)
+		uniform float lumamount; //
+	uniform bool lockAlpha;
 
 		//a random texture generator, but you can also use a pre-computed perturbation texture
 	
@@ -529,7 +529,7 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
       	vec2 look = uv;
         if(distortionOn){
         	float window = 1./(1.+20.*(look.y-mod(iTime/4.,1.))*(look.y-mod(iTime/4.,1.)));
-        	look.x = look.x + (sin(look.y*10. + iTime)/50.*onOff(4.,4.,.3)*(1.+cos(iTime*80.))*window)*(glitchModifier*2);
+        	look.x = look.x + (sin(look.y*10. + iTime)/50.*onOff(4.,4.,.3)*(1.+cos(iTime*80.))*window)*(glitchModifier*2.);
         	float vShift = 0.4*onOff(2.,3.,.9)*(sin(iTime)*sin(iTime*20.) +
         										 (0.5 + 0.1*sin(iTime*200.)*cos(iTime)));
         	look.y = mod(look.y + vShift*glitchModifier, 1.);
@@ -612,7 +612,7 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
 
       gl_FragColor = mix(video,vec4(noise(uv * 75.)),.05);
 
-      if(curUV.x<0 || curUV.x>1 || curUV.y<0 || curUV.y>1){
+      if(curUV.x<0. || curUV.x>1. || curUV.y<0. || curUV.y>1.){
         gl_FragColor = vec4(0,0,0,0);
       }
 
@@ -644,10 +644,10 @@ class ThreeDEffect extends Effect{
 class ThreeDShader extends FlxShader{
 	@:glFragmentSource('
 	#pragma header
-	uniform float xrot = 0.0;
-	uniform float yrot = 0.0;
-	uniform float zrot = 0.0;
-	uniform float dept = 0.0;
+	uniform float xrot;
+	uniform float yrot;
+	uniform float zrot;
+	uniform float dept;
 	float alph = 0;
 float plane( in vec3 norm, in vec3 po, in vec3 ro, in vec3 rd ) {
     float de = dot(norm, rd);
@@ -811,8 +811,8 @@ class FuckingTriangle extends FlxShader{
 
 		const vec3 cameraPos = vec3(0., 0.3, 2.);
 
-			uniform float rotX = -25.;
-			uniform float rotY = 45.;
+			uniform float rotX;
+			uniform float rotY;
 		vec4 pixel(in vec2 ndc, in float aspect, inout float depth, in int vertexIndex) {
 
 			
@@ -902,8 +902,8 @@ class BloomShader extends FlxShader{
 	
 	#pragma header
 	
-	uniform float intensity = 0.35;
-	uniform float blurSize = 1.0/512.0;
+	uniform float intensity;
+	uniform float blurSize;
 void main()
 {
    vec4 sum = vec4(0);
